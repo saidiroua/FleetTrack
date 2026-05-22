@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { geofenceController } from '../controllers/geofenceController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { requireRole } from '../middleware/roleMiddleware.js';
+const router = Router();
+router.get('/', protect, requireRole('ADMIN', 'SUPERVISOR'), geofenceController.getAll);
+router.get('/:id', protect, requireRole('ADMIN', 'SUPERVISOR'), geofenceController.getById);
+router.post('/', protect, requireRole('ADMIN', 'SUPERVISOR'), geofenceController.create);
+router.put('/:id', protect, requireRole('ADMIN', 'SUPERVISOR'), geofenceController.update);
+router.put('/:id/toggle', protect, requireRole('ADMIN', 'SUPERVISOR'), geofenceController.toggleActive);
+router.delete('/:id', protect, requireRole('ADMIN'), geofenceController.delete);
+export default router;

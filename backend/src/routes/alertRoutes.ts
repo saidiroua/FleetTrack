@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { alertController } from '../controllers/alertController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { requireRole } from '../middleware/roleMiddleware.js';
+const router = Router();
+router.get('/', protect, alertController.getAll);
+router.get('/stats', protect, requireRole('ADMIN', 'SUPERVISOR'), alertController.getStats);
+router.put('/:id/acknowledge', protect, requireRole('ADMIN', 'SUPERVISOR', 'OPERATOR'), alertController.acknowledge);
+router.put('/acknowledge-all', protect, requireRole('ADMIN', 'SUPERVISOR'), alertController.acknowledgeAll);
+export default router;

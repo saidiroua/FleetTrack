@@ -1,0 +1,13 @@
+import { Router } from 'express';
+import { deviceController } from '../controllers/deviceController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { requireRole } from '../middleware/roleMiddleware.js';
+const router = Router();
+router.get('/', protect, deviceController.getAll);
+router.get('/stats', protect, requireRole('ADMIN', 'SUPERVISOR'), deviceController.getStats);
+router.get('/:id', protect, deviceController.getById);
+router.post('/', protect, requireRole('ADMIN'), deviceController.create);
+router.put('/:id', protect, requireRole('ADMIN'), deviceController.update);
+router.delete('/:id', protect, requireRole('ADMIN'), deviceController.delete);
+router.post('/assign', protect, requireRole('ADMIN'), deviceController.assignDevice);
+export default router;

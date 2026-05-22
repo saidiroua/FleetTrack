@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { userController } from '../controllers/userController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { requireRole } from '../middleware/roleMiddleware.js';
+const router = Router();
+router.get('/', protect, requireRole('ADMIN'), userController.getAll);
+router.get('/stats', protect, requireRole('ADMIN'), userController.getStats);
+router.get('/:id', protect, requireRole('ADMIN'), userController.getById);
+router.post('/', protect, requireRole('ADMIN'), userController.create);
+router.put('/:id', protect, requireRole('ADMIN'), userController.update);
+router.delete('/:id', protect, requireRole('ADMIN'), userController.delete);
+export default router;

@@ -1,0 +1,12 @@
+import { Router } from 'express';
+import { analyticsController } from '../controllers/analyticsController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { requireRole } from '../middleware/roleMiddleware.js';
+const router = Router();
+router.get('/dashboard', protect, requireRole('ADMIN', 'SUPERVISOR'), analyticsController.getDashboard);
+router.get('/devices', protect, requireRole('ADMIN', 'SUPERVISOR'), analyticsController.getDeviceActivity);
+router.get('/alerts', protect, requireRole('ADMIN', 'SUPERVISOR'), analyticsController.getAlertStats);
+router.get('/distance', protect, requireRole('ADMIN', 'SUPERVISOR'), analyticsController.getDistanceStats);
+router.get('/coverage', protect, requireRole('ADMIN', 'SUPERVISOR'), analyticsController.getCoverageByGroup);
+router.get('/signal', protect, requireRole('ADMIN', 'SUPERVISOR'), analyticsController.getSignalQuality);
+export default router;
