@@ -21,7 +21,8 @@ export const alertController = {
   },
   async acknowledge(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const alert = await alertService.acknowledge(parseInt(req.params.id), req.user!.id);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const alert = await alertService.acknowledge(parseInt(id), req.user!.id);
       res.json(alert);
     } catch (error: any) {
       res.status(500).json({ message: error.message });

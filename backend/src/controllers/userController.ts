@@ -34,7 +34,8 @@ export const userController = {
   },
   async update(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const user = await userService.update(parseInt(req.params.id), req.body);
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      const user = await userService.update(parseInt(id), req.body);
       res.json(user);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -42,7 +43,8 @@ export const userController = {
   },
   async delete(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      await userService.delete(parseInt(req.params.id));
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+      await userService.delete(parseInt(id));
       res.json({ message: 'Utilisateur supprimé' });
     } catch (error: any) {
       res.status(500).json({ message: error.message });

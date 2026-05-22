@@ -19,11 +19,11 @@ export const locationController = {
   },
   async getHistory(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const deviceId = parseInt(req.params.deviceId);
+      const deviceId = Array.isArray(req.params.deviceId) ? req.params.deviceId[0] : req.params.deviceId;
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 100;
       const from = req.query.from ? new Date(req.query.from as string) : undefined;
       const to = req.query.to ? new Date(req.query.to as string) : undefined;
-      const history = await locationService.getHistory(deviceId, limit, from, to);
+      const history = await locationService.getHistory(parseInt(deviceId), limit, from, to);
       res.json(history);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -31,8 +31,8 @@ export const locationController = {
   },
   async getLatestByDevice(req: AuthenticatedRequest, res: Response): Promise<void> {
     try {
-      const deviceId = parseInt(req.params.deviceId);
-      const location = await locationService.getLatestByDevice(deviceId);
+      const deviceId = Array.isArray(req.params.deviceId) ? req.params.deviceId[0] : req.params.deviceId;
+      const location = await locationService.getLatestByDevice(parseInt(deviceId));
       if (!location) {
         res.status(404).json({ message: 'Aucune position trouvée pour cet appareil' });
         return;

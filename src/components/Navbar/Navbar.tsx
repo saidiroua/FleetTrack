@@ -1,4 +1,5 @@
-import { Bell, Search, Wifi, WifiOff, Menu } from 'lucide-react';
+import { useState } from 'react';
+import { Bell, Search, Wifi, WifiOff, Menu, Moon, Sun } from 'lucide-react';
 import { useSocket } from '../../context/SocketContext';
 interface NavbarProps {
   currentTitle: string;
@@ -9,6 +10,11 @@ interface NavbarProps {
 }
 export function Navbar({ currentTitle, unacknowledgedAlerts, userName, userRole, toggleMobileMenu }: NavbarProps) {
   const { connected } = useSocket();
+  const [showSun, setShowSun] = useState(false);
+
+  const toggleIcon = () => {
+    setShowSun(!showSun);
+  };
   return (
     <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0 w-full">
       <div className="flex items-center gap-3">
@@ -36,6 +42,10 @@ export function Navbar({ currentTitle, unacknowledgedAlerts, userName, userRole,
             style={{ fontSize: 13, width: 200 }}
           />
         </div>
+        {}
+        <button className="p-2 rounded-xl text-slate-400 hover:bg-slate-50 hover:text-slate-600" onClick={toggleIcon}>
+          {showSun ? <Sun size={18} /> : <Moon size={18} />}
+        </button>
         {}
         <button className="relative p-2 rounded-xl text-slate-400 hover:bg-slate-50 hover:text-slate-600">
           <Bell size={18} />
